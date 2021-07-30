@@ -19,8 +19,6 @@ FROM alpine:latest
 
 COPY --from=go-builder /build/picbed /app/picbed
 
-COPY --from=go-builder /build/config.example.yml
-
 VOLUME /data
 
 ENTRYPOINT [ "/app/picbed" ]
