@@ -28,6 +28,7 @@ func HandleUpload(c echo.Context) error {
 
 	imgPath, dstPath, err := saveImage(file)
 	if err != nil {
+		os.Remove(dstPath)
 		return err
 	}
 
@@ -62,12 +63,10 @@ func saveImage(file *multipart.FileHeader) (string, string, error) {
 
 	b, err := isImage(dstPath)
 	if err != nil {
-		os.Remove(dstPath)
 		return "", "", err
 	}
 
 	if !b {
-		os.Remove(dstPath)
 		return "", "", echo.NewHTTPError(400, "not image")
 	}
 
