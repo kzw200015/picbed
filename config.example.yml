@@ -1,0 +1,4 @@
+port: 8080 #端口
+imgSrc: ./images #图片源目录
+debug: true #是否开启调试模式
+referers: ["*.example.com", "example.com"] #防盗链允许的Referer
