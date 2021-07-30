@@ -21,6 +21,8 @@ COPY --from=go-builder /build/picbed /app/picbed
 
 VOLUME /data
 
+EXPOSE 8080
+
 ENTRYPOINT [ "/app/picbed" ]
 
 CMD [ "-s", "/data" ]
