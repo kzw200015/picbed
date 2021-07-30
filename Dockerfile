@@ -19,7 +19,7 @@ FROM alpine:latest
 
 COPY --from=go-builder /build/picbed /app/picbed
 
-RUN touch /etc/picbed/config.yml
+RUN mkdir -p /etc/picbed && touch /etc/picbed/config.yml
 
 VOLUME /etc/picbed/config.yml
 
