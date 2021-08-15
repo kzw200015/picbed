@@ -9,24 +9,22 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-var e = echo.New()
+var e *echo.Echo
 
 func Get() *echo.Echo {
 	return e
 }
 
 func init() {
-	e.HTTPErrorHandler = handlers.HandleError
+	e = echo.New()
 
-	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "[${time_rfc3339}] INFO ${latency_human} ${status} ${method} ${uri}" + "\n",
-	}))
+	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Recover())
+	e.Use(middlewares.Logger())
 	e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 		Level: 5,
 	}))
 	e.Use(middleware.CORS())
-
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		Filesystem: assets.GetFS(),
 	}))

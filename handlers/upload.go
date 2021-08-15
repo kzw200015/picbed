@@ -3,6 +3,7 @@ package handlers
 import (
 	"io"
 	"mime/multipart"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -67,7 +68,7 @@ func saveImage(file *multipart.FileHeader) (string, string, error) {
 	}
 
 	if !b {
-		return "", "", echo.NewHTTPError(400, "not image")
+		return "", "", echo.NewHTTPError(http.StatusBadRequest, "not image")
 	}
 
 	return filepath.ToSlash(filepath.Join(config.IMG_ROUTE_PREFIX, dstFileName)), dstPath, nil

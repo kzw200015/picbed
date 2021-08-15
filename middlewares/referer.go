@@ -26,6 +26,6 @@ func Referer(next echo.HandlerFunc) echo.HandlerFunc {
 			}
 		}
 
-		return echo.NewHTTPError(403)
+		return echo.ErrForbidden
 	}
 }
