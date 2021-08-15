@@ -14,16 +14,3 @@
 ### 配置文件
 - 参照config.example.yml编写配置文件
 - `./picbed -c /path/to/config`
-### 命令行参数
-```
-./picbed -p port -s /path/to/images
-```
-**不支持指定Referer，默认为"*"，即允许所有**
-### 环境变量
-- `PB_PORT` 端口
-- `PB_PORT_IMG_SRC` 图片目录
-- `PB_PORT_DEBUG` 调试模式
-
-**不支持指定Referer，默认为"*"，即允许所有**
-
-三者可结合使用 优先级：环境变量 > 配置文件 > 命令行参数
