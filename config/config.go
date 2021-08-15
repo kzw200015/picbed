@@ -2,6 +2,7 @@ package config
 
 import (
 	"flag"
+	"fmt"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -43,6 +44,10 @@ func initFromFile(path string) {
 	}
 }
 
+func printConfig() {
+	fmt.Printf("config: %+v\n", config)
+}
+
 func init() {
 	initDefault()
 
@@ -53,4 +58,6 @@ func init() {
 	if !(*path == "") {
 		initFromFile(*path)
 	}
+
+	printConfig()
 }
