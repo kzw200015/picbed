@@ -104,10 +104,11 @@ const handleCopy = async (text: string) => {
 
 export default defineComponent({
   setup() {
+    //图片上传
     const fileList = ref<Array<ImageItem>>([])
     const action = ref(backendAPIURL + '/upload')
 
-    async function uploadRequest(options: unknown) {
+    const uploadRequest = async (options: unknown) => {
       const ops = options as { action: string, file: File }
       const index = fileList.value.push({ id: '', name: ops.file.name, url: '', percentage: 0 }) - 1
       const formData = new FormData()
@@ -137,6 +138,7 @@ export default defineComponent({
     }
 
 
+    // 链接复制
     const handleCopyMarkdown = async (img: ImageItem) => {
       await handleCopy(`![${img.name}](${formatURL(img.url)})`)
     }
@@ -149,7 +151,7 @@ export default defineComponent({
       await handleCopy(formatURL(img.url))
     }
 
-
+    // 图片删除
     const handleDeleteConfirm = async (index: number) => {
       const file = fileList.value[index]
       try {
