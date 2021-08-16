@@ -16,6 +16,12 @@
     </el-col>
   </el-row>
   <el-row justify="center">
+    <el-col :md="10" style="text-align: center">
+      {{ "启用压缩" }}
+      <el-switch v-model="isCompress"> </el-switch>
+    </el-col>
+  </el-row>
+  <el-row justify="center">
     <el-col :sm="18" :md="12">
       <el-card
         shadow="hover"
@@ -75,6 +81,7 @@ import { defineComponent, ref } from 'vue'
 import { backend, backendAPIURL, backendURL } from '../api'
 import { ElNotification } from 'element-plus'
 import { Image } from '../types'
+import Compressor from 'compressorjs'
 
 interface ImageItem extends Image {
   percentage: number
@@ -107,11 +114,25 @@ export default defineComponent({
     //图片上传
     const fileList = ref<Array<ImageItem>>([])
     const action = ref(backendAPIURL + '/upload')
+    const isCompress = ref(true)
+
+    const compressImage = (img: File): Promise<File> => {
+      return new Promise((resolve, reject) => {
+        new Compressor(img, {
+          success: (f: File) => resolve(f),
+          error: (e) => reject(e)
+        })
+      })
+    }
 
     const uploadRequest = async (options: unknown) => {
       const ops = options as { action: string, file: File }
       const index = fileList.value.push({ id: '', name: ops.file.name, url: '', percentage: 0 }) - 1
       const formData = new FormData()
+      if (isCompress.value) {
+        const img = await compressImage(ops.file)
+        formData.append('file', img, img.name)
+      }
       formData.append('file', ops.file)
       let resp: AxiosResponse<Image> | undefined
       try {
@@ -173,7 +194,7 @@ export default defineComponent({
     }
 
     return {
-      action, uploadRequest, fileList,
+      action, uploadRequest, fileList, isCompress,
       handleCopyMarkdown, handleCopyHTML, handleCopyURL,
       handleDeleteConfirm
     }
